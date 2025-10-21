@@ -16,7 +16,7 @@
         <div class="container">
             
             <a href="index.html" class="navbar-brand">
-                <img src="images/MINLABS_LOGO.svg" alt="MinLabs Logo" style="height: 40px;">
+                <img src="images/MINLABS_LOGO.svg" alt="MinLabs Logo" style="height: 60px;">
             </a>
 
             <button class="navbar-toggler" type="button" 
@@ -99,30 +99,47 @@
             </div> </section>
 
         <section id="testimonios" class="testimonials-section my-5">
-            <h2 class="text-center mb-4">Confía en Nosotros</h2>
+    <h2 class="text-center mb-4">Confía en Nosotros</h2>
+
+    <div id="testimonialCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel">
+        
+        <div class="carousel-indicators">
+            <button type_button" data-bs-target="#testimonialCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type_button" data-bs-target="#testimonialCarousel" data-bs-slide-to="1"></button>
+            </div>
+
+        <div class="carousel-inner">
             
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <p>"La velocidad y la calidad de las piezas superaron nuestras expectativas. El soporte de ingeniería fue clave."</p>
-                                <footer class="blockquote-footer">CEO de Prototipos Velox S.R.L.</footer>
-                            </blockquote>
-                        </div>
-                    </div>
+            <div class="carousel-item active">
+                <div class="container p-5 text-center">
+                    <blockquote class="blockquote">
+                        <p class="lead">"La velocidad y la calidad de las piezas superaron nuestras expectativas. El soporte de ingeniería fue clave para nuestro proyecto."</p>
+                        <footer class="blockquote-footer">CEO de Prototipos Velox S.R.L.</footer>
+                    </blockquote>
                 </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <blockquote class="blockquote mb-0">
-                                <p>"Excelente atención y resultados. Logramos iterar nuestro producto mucho más rápido gracias a MinLabs."</p>
-                                <footer class="blockquote-footer">Jefe de Producto en Innovatech</footer>
-                            </blockquote>
-                        </div>
-                    </div>
+            </div>
+
+            <div class="carousel-item">
+                <div class="container p-5 text-center">
+                    <blockquote class="blockquote">
+                        <p class="lead">"Excelente atención y resultados. Logramos iterar nuestro producto mucho más rápido gracias a MinLabs."</p>
+                        <footer class="blockquote-footer">Jefe de Producto en Innovatech</footer>
+                    </blockquote>
                 </div>
-            </div> </section>
+            </div>
+
+            </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Siguiente</span>
+        </button>
+    </div>
+</section>
 
         <section id="presupuesto" class="my-5 p-4 border rounded">
             <h2 class="text-center mb-4">Solicita tu Presupuesto</h2>
@@ -200,6 +217,5 @@
     
     <script src="js/main.js"></script>
 
-    <script src="js/main.js"></script>
 </body>
 </html>
