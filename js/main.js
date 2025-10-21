@@ -7,7 +7,6 @@ PROYECTO: MinLabs - Página de Presupuestos
 
 // --- 1. SELECCIÓN DE ELEMENTOS DEL DOM ---
 // Guardamos en variables los elementos del HTML con los que vamos a interactuar.
-// Es una buena práctica hacerlo al inicio para tener un acceso rápido.
 // -----------------------------------------------------
 
 // El formulario completo para escuchar el 'submit'
