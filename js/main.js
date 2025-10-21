@@ -21,6 +21,8 @@ const inputDescripcion = document.querySelector('#input-descripcion');
 // El contenedor <ul> donde "dibujaremos" la lista de presupuestos
 const listaPresupuestos = document.querySelector('#lista-presupuestos');
 
+// Seleccionamos el contenedor padre de todas las tarjetas
+const contenedorServicios = document.querySelector('#servicios .row');
 
 // --- 2. BASE DE DATOS Y ESTADO GLOBAL ---
 // Aquí definimos nuestro array principal.
@@ -48,6 +50,22 @@ formPresupuesto.addEventListener('submit', agregarPresupuesto);
 // Usamos "Event Delegation": un solo listener en el <ul> padre
 // para manejar los clics en los botones "Eliminar" que aún no existen.
 listaPresupuestos.addEventListener('click', manejarClickEnLista);
+
+// Añadimos un solo 'click' listener al contenedor padre
+contenedorServicios.addEventListener('click', (event) => {
+    
+    // 'event.target' es lo que clickeamos. 
+    // '.closest()' busca el ancestro más cercano que tenga la clase '.service-card'
+    const card = event.target.closest('.service-card');
+
+    // Si el clic no fue dentro de una tarjeta, 'card' será null. En ese caso, no hacemos nada.
+    if (!card) {
+        return; 
+    }
+
+    // Ahora, alternamos (toggle) el contenido.
+    toggleCardInfo(card);
+});
 
 
 // --- 4. FUNCIONES PRINCIPALES (LÓGICA DEL CRUD) ---
@@ -141,6 +159,22 @@ function eliminarPresupuesto(id) {
     renderizarPresupuestos();
 }
 
+/**
+ * Alterna el contenido y el color de una tarjeta de servicio específica.
+ */
+function toggleCardInfo(card) {
+    // 1. Encontrar las descripciones DENTRO de esa tarjeta específica
+    const shortDesc = card.querySelector('.description-short');
+    const detailedDesc = card.querySelector('.description-detailed');
+
+    // 2. Alternar la clase 'd-none' (oculto/visible) en ambas descripciones
+    shortDesc.classList.toggle('d-none');
+    detailedDesc.classList.toggle('d-none');
+
+    // 3. Alternar una clase en la tarjeta para el cambio de color
+    // Esta clase '.card-flipped' la definiremos en nuestro CSS
+    card.classList.toggle('card-flipped');
+}
 
 // --- 5. FUNCIONES AUXILIARES (HELPERS) ---
 // Funciones que realizan tareas de apoyo.

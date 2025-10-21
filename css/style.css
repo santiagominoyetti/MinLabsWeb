@@ -1,99 +1,35 @@
-/* --- Variables y Estilos Generales --- */
-:root {
-    --primary-color: #0052cc; /* Un azul corporativo */
-    --secondary-color: #f4f5f7; /* Gris claro para fondos */
-    --dark-color: #172b4d; /* Texto principal */
-    --light-color: #ffffff;
-    --border-radius: 8px;
-}
+/*
+=====================================================
+ARCHIVO: style.css
+=====================================================
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    margin: 0;
-    color: var(--dark-color);
-    background-color: var(--light-color);
-    line-height: 1.6;
-}
+/* ---  Estilos para Tarjetas de Servicio Clickables --- */
 
-/* --- Header y Navegación con Dropdown --- */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background-color: var(--light-color);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-}
-
-.nav-menu {
-    list-style: none;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin: 0;
-}
-.nav-link { text-decoration: none; color: var(--dark-color); font-weight: 600; }
-.btn { padding: 10px 20px; border-radius: var(--border-radius); text-decoration: none; font-weight: 600; }
-.btn-primary { background-color: var(--primary-color); color: var(--light-color); }
-
-.dropdown { position: relative; }
-.dropdown-menu {
-    display: none; /* Oculto por defecto */
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--light-color);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    border-radius: var(--border-radius);
-    list-style: none;
-    padding: 0.5rem 0;
-    z-index: 1000;
-}
-.dropdown-menu li a { display: block; padding: 0.5rem 1.5rem; color: var(--dark-color); }
-.dropdown:hover .dropdown-menu { display: block; } /* Mostrar en hover para desktop */
-.dropdown:focus-within .dropdown-menu { display: block; } /* Mostrar en focus para accesibilidad */
-
-/* --- Barra de Servicios Scrolleable --- */
-.services-section { padding: 4rem 5%; text-align: center; }
-.services-bar-container {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto; /* La magia del scroll horizontal */
-    padding-bottom: 1.5rem; /* Espacio para la barra de scroll */
-    -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
-}
-/* Estilo sutil para la barra de scroll */
-.services-bar-container::-webkit-scrollbar { height: 8px; }
-.services-bar-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-
+/* Le decimos al usuario que la tarjeta es 'clickable' 
+cambiando el cursor.
+*/
 .service-card {
-    flex: 0 0 280px; /* Ancho fijo para cada tarjeta */
-    background-color: var(--secondary-color);
-    padding: 1.5rem;
-    border-radius: var(--border-radius);
-    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Transición suave */
 }
-.service-card img { height: 40px; margin-bottom: 1rem; }
 
-/* --- Sección de Testimonios --- */
-.testimonials-section { padding: 4rem 5%; background-color: var(--secondary-color); text-align: center; }
-.testimonials-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-    text-align: left;
+/* Un efecto 'hover' sutil para que el usuario 
+sepa que puede interactuar.
+*/
+.service-card:hover {
+    transform: translateY(-5px); /* Se eleva un poquito */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.testimonial-card {
-    background-color: var(--light-color);
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-.testimonial-card cite { display: block; margin-top: 1rem; font-weight: 600; font-style: normal; }
 
-/* --- Footer --- */
-.main-footer { background-color: var(--dark-color); color: var(--light-color); padding: 2rem 5%; }
-.footer-content { display: flex; justify-content: space-between; align-items: center; }
-.footer-social a { color: var(--light-color); font-size: 1.5rem; margin-left: 1rem; }
-.footer-bottom { text-align: center; margin-top: 2rem; opacity: 0.7; }
+/* La clase que en JS (toggleCardInfo) se añade y quita.
+Define el aspecto de la tarjeta "volteada".
+*/
+.service-card.card-flipped {
+    /* Usamos variables CSS de Bootstrap para ser consistentes:
+    var(--bs-light) es el gris claro de fondo.
+    var(--bs-primary) es el azul principal del borde.
+    */
+    background-color: var(--bs-light); 
+    border-color: var(--bs-primary); 
+    border-width: 2px; 
+}
