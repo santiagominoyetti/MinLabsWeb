@@ -77,17 +77,35 @@ contenedorServicios.addEventListener('click', (event) => {
 // Evento 4: Manejo de links en "Quiénes Somos" dentro del dropdown
 linksQuienesSomos.forEach(link => {
   link.addEventListener('click', function(event) {
+    //Prevenimos el "salto" brusco (siempre)
     event.preventDefault();
-    event.stopPropagation();
     const targetId = this.getAttribute('href');
-    bsCollapse.show();
-    
-    contenedorQuienesSomos.addEventListener('shown.bs.collapse', function() {
+    const scrollToSection = () => {
       const targetSection = document.querySelector(targetId);
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: 'smooth' });
       }
-    }, { once: true });
+    };
+    // Revisamos si el contenedor YA ESTÁ ABIERTO
+    if (contenedorQuienesSomos.classList.contains('show')) {
+      
+      // SI ESTÁ ABIERTO:
+      // Simplemente nos desplazamos.
+      scrollToSection();
+
+    } else {
+      
+      // SI ESTÁ CERRADO:
+      // detenemos la propagación para evitar
+      // que el menú se cierre antes de que abramos el colapso.
+      event.stopPropagation();
+      
+      // Preparamos el listener para "cuando termine de abrir"
+      contenedorQuienesSomos.addEventListener('shown.bs.collapse', scrollToSection, { once: true });
+      
+      // Damos la orden de abrir
+      bsCollapse.show();
+    }
   });
 });
 
