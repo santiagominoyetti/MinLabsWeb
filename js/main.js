@@ -118,6 +118,11 @@ function renderizarPresupuestos() {
     presupuestos.forEach(presupuesto => {
         // 3. Creamos un nuevo elemento <li> por cada presupuesto.
         const li = document.createElement('li');
+        // Usamos 'list-group-item' como contenedor principal del item
+        li.classList.add('list-group-item');
+
+        // Generamos un ID único para el DIV colapsable de este item
+        const formId = `edit-form-${presupuesto.id}`;
 
         // 4. Le añadimos las clases de Bootstrap para que se vea bien.
         // 'list-group-item': Estilo base de la lista.
@@ -128,19 +133,93 @@ function renderizarPresupuestos() {
         // 5. Creamos el contenido HTML del <li>.
         // Usamos backticks (`) para insertar variables fácilmente.
         li.innerHTML = `
-            <div>
-                <strong>${presupuesto.servicio}</strong>
-                <span class="text-muted d-block small">${presupuesto.nombre} (${presupuesto.email})</span>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>${presupuesto.servicio}</strong>
+                    <span class="text-muted d-block small">${presupuesto.nombre} (${presupuesto.email})</span>
+                </div>
+                
+                <div>
+                    <button class="btn btn-warning btn-sm me-2" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#${formId}">
+                        Editar
+                    </button>
+
+                    <button class="btn btn-danger btn-sm boton-eliminar" data-id="${presupuesto.id}">
+                        Eliminar
+                    </button>
+                </div>
             </div>
-            
-            <button class="btn btn-danger btn-sm boton-eliminar" data-id="${presupuesto.id}">
-                Eliminar
-            </button>
+
+            <div class="collapse pt-3" id="${formId}">
+                <div class="mb-2">
+                    <label class="form-label small">Nombre:</label>
+                    <input type="text" class="form-control edit-nombre" value="${presupuesto.nombre}">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Email:</label>
+                    <input type="email" class="form-control edit-email" value="${presupuesto.email}">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Servicio:</label>
+                    <select class="form-select edit-servicio">
+                        <option value="Prototipado" ${presupuesto.servicio === 'Prototipado' ? 'selected' : ''}>Prototipado Rápido</option>
+                        <option value="Inversa" ${presupuesto.servicio === 'Inversa' ? 'selected' : ''}>Ingeniería Inversa</option>
+                        <option value="CAD" ${presupuesto.servicio === 'CAD' ? 'selected' : ''}>Diseño CAD</option>
+                        <option value="Compuestos" ${presupuesto.servicio === 'Compuestos' ? 'selected' : ''}>Materiales Compuestos</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label small">Descripción:</label>
+                    <textarea class="form-control edit-descripcion">${presupuesto.descripcion}</textarea>
+                </div>
+                
+                <button class="btn btn-success btn-sm w-100 boton-guardar" data-id="${presupuesto.id}">
+                    Guardar Cambios
+                </button>
+            </div>
         `;
 
         // 6. Añadimos el <li> recién creado a la <ul> en el HTML.
         listaPresupuestos.appendChild(li);
     });
+}
+
+/**
+ * Función UPDATE: Actualiza un presupuesto en el array.
+ */
+function actualizarPresupuesto(id, botonGuardar) {
+    // 1. Encontrar el <li> padre que contiene todo (el botón, el form, etc.)
+    // Usamos .closest() para buscar el ancestro 'list-group-item' más cercano
+    const li = botonGuardar.closest('.list-group-item');
+
+    // 2. Leer los nuevos valores desde el formulario de edición DENTRO de ese <li>
+    // Por esto usamos clases ('.edit-nombre') en lugar de IDs.
+    const nuevoNombre = li.querySelector('.edit-nombre').value;
+    const nuevoEmail = li.querySelector('.edit-email').value;
+    const nuevoServicio = li.querySelector('.edit-servicio').value;
+    const nuevaDescripcion = li.querySelector('.edit-descripcion').value;
+
+    // 3. Encontrar el presupuesto en nuestro array de datos usando su ID
+    const presupuestoAActualizar = presupuestos.find(presupuesto => presupuesto.id === id);
+
+    // 4. Si existe, actualizamos sus propiedades
+    if (presupuestoAActualizar) {
+        presupuestoAActualizar.nombre = nuevoNombre;
+        presupuestoAActualizar.email = nuevoEmail;
+        presupuestoAActualizar.servicio = nuevoServicio;
+        presupuestoAActualizar.descripcion = nuevaDescripcion;
+    }
+
+    // 5. Guardamos el array (ya modificado) en LocalStorage
+    guardarEnStorage();
+
+    // 6. Volvemos a "dibujar" toda la lista
+    // Esto es genial, porque automáticamente reconstruirá el HTML
+    // y el formulario de edición volverá a estar oculto.
+    renderizarPresupuestos();
 }
 
 /**
@@ -195,6 +274,14 @@ function manejarClickEnLista(event) {
 
         // 2. Llamamos a la función de eliminar pasándole ese ID.
         eliminarPresupuesto(id);
+    }
+    // CASO 2: Si se hizo clic en "Guardar Cambios"
+    else if (event.target.classList.contains('boton-guardar')) {
+        // 1. Obtenemos el ID del botón de guardar
+        const id = parseInt(event.target.dataset.id);
+        
+        // 2. Llamamos a la nueva función de actualizar
+        actualizarPresupuesto(id, event.target);
     }
 }
 
