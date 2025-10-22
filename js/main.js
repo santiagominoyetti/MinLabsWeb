@@ -133,7 +133,7 @@ function renderizarPresupuestos() {
         // 5. Creamos el contenido HTML del <li>.
         // Usamos backticks (`) para insertar variables fácilmente.
         li.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-between align-items-center w-100">
                 <div>
                     <strong>${presupuesto.servicio}</strong>
                     <span class="text-muted d-block small">${presupuesto.nombre} (${presupuesto.email})</span>
@@ -153,7 +153,7 @@ function renderizarPresupuestos() {
                 </div>
             </div>
 
-            <div class="collapse pt-3" id="${formId}">
+            <div class="collapse pt-3 w-100" id="${formId}">
                 <div class="mb-2">
                     <label class="form-label small">Nombre:</label>
                     <input type="text" class="form-control edit-nombre" value="${presupuesto.nombre}">
