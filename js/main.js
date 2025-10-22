@@ -78,6 +78,7 @@ contenedorServicios.addEventListener('click', (event) => {
 linksQuienesSomos.forEach(link => {
   link.addEventListener('click', function(event) {
     event.preventDefault();
+    event.stopPropagation();
     const targetId = this.getAttribute('href');
     bsCollapse.show();
     
