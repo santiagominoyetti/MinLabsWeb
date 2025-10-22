@@ -128,7 +128,7 @@ function renderizarPresupuestos() {
         // 'list-group-item': Estilo base de la lista.
         // 'd-flex', 'justify-content-between', 'align-items-center': Clases de Flexbox
         // para alinear el texto a la izquierda y el botón a la derecha.
-        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+        li.classList.add('list-group-item');
 
         // 5. Creamos el contenido HTML del <li>.
         // Usamos backticks (`) para insertar variables fácilmente.
