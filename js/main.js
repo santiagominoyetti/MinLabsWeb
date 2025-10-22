@@ -24,6 +24,13 @@ const listaPresupuestos = document.querySelector('#lista-presupuestos');
 // Seleccionamos el contenedor padre de todas las tarjetas
 const contenedorServicios = document.querySelector('#servicios .row');
 
+// Bootstrap Collapse para "Quiénes Somos"
+const contenedorQuienesSomos = document.querySelector('#quienes-somos-contenedor');
+const bsCollapse = new bootstrap.Collapse(contenedorQuienesSomos, {
+  toggle: false 
+});
+const linksQuienesSomos = document.querySelectorAll('.dropdown-menu a[href^="#"]');
+
 // --- 2. BASE DE DATOS Y ESTADO GLOBAL ---
 // Aquí definimos nuestro array principal.
 // Intentamos cargarlo desde localStorage. Si no hay nada guardado (`null`),
@@ -67,6 +74,21 @@ contenedorServicios.addEventListener('click', (event) => {
     toggleCardInfo(card);
 });
 
+// Evento 4: Manejo de links en "Quiénes Somos" dentro del dropdown
+linksQuienesSomos.forEach(link => {
+  link.addEventListener('click', function(event) {
+    event.preventDefault();
+    const targetId = this.getAttribute('href');
+    bsCollapse.show();
+    
+    contenedorQuienesSomos.addEventListener('shown.bs.collapse', function() {
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, { once: true });
+  });
+});
 
 // --- 4. FUNCIONES PRINCIPALES (LÓGICA DEL CRUD) ---
 // Aquí está el cerebro de la aplicación.
