@@ -30,6 +30,8 @@ const bsCollapse = new bootstrap.Collapse(contenedorQuienesSomos, {
   toggle: false 
 });
 const linksQuienesSomos = document.querySelectorAll('.dropdown-menu a[href^="#"]');
+const dropdownToggle = document.querySelector('.dropdown-toggle[data-bs-toggle="dropdown"]');
+const bsDropdown = new bootstrap.Dropdown(dropdownToggle);
 
 // --- 2. BASE DE DATOS Y ESTADO GLOBAL ---
 // Aquí definimos nuestro array principal.
@@ -79,28 +81,33 @@ linksQuienesSomos.forEach(link => {
   link.addEventListener('click', function(event) {
     //Prevenimos el "salto" brusco (siempre)
     event.preventDefault();
+
+    // Detenemos el evento SIEMPRE para que no cierre el menú por su cuenta.
+    event.stopPropagation();
+
     const targetId = this.getAttribute('href');
+    
     const scrollToSection = () => {
       const targetSection = document.querySelector(targetId);
       if (targetSection) {
         targetSection.scrollIntoView({ behavior: 'smooth' });
       }
+      // Cerramos el dropdown manualmente.
+      bsDropdown.hide();
     };
+
     // Revisamos si el contenedor YA ESTÁ ABIERTO
     if (contenedorQuienesSomos.classList.contains('show')) {
       
       // SI ESTÁ ABIERTO:
-      // Simplemente nos desplazamos.
+      // Simplemente nos desplazamos (y luego cerramos el menú)
       scrollToSection();
 
     } else {
       
       // SI ESTÁ CERRADO:
-      // detenemos la propagación para evitar
-      // que el menú se cierre antes de que abramos el colapso.
-      event.stopPropagation();
-      
       // Preparamos el listener para "cuando termine de abrir"
+      // Le decimos que llame a scrollToSection (que también cerrará el menú)
       contenedorQuienesSomos.addEventListener('shown.bs.collapse', scrollToSection, { once: true });
       
       // Damos la orden de abrir
@@ -110,7 +117,6 @@ linksQuienesSomos.forEach(link => {
 });
 
 // --- 4. FUNCIONES PRINCIPALES (LÓGICA DEL CRUD) ---
-// Aquí está el cerebro de la aplicación.
 // -----------------------------------------------------
 
 /**
@@ -118,11 +124,10 @@ linksQuienesSomos.forEach(link => {
  * Lee los datos, crea un objeto, lo añade al array y actualiza la vista.
  */
 function agregarPresupuesto(event) {
-    // 1. event.preventDefault() es CRUCIAL.
     // Evita que el formulario se envíe de la forma tradicional y recargue la página.
     event.preventDefault();
 
-    // 2. Creamos el objeto del nuevo presupuesto.
+    // Creamos el objeto del nuevo presupuesto.
     // Generamos un ID único usando la fecha y hora en milisegundos.
     const nuevoPresupuesto = {
         id: Date.now(),
@@ -132,17 +137,17 @@ function agregarPresupuesto(event) {
         descripcion: inputDescripcion.value
     };
 
-    // 3. Añadimos el nuevo objeto al INICIO del array con 'unshift()'
+    // Añadimos el nuevo objeto al INICIO del array con 'unshift()'
     // (Usamos 'unshift' en lugar de 'push' para que los nuevos aparezcan arriba)
     presupuestos.unshift(nuevoPresupuesto);
 
-    // 4. Limpiamos el formulario para que el usuario pueda agregar otro.
+    // Limpiamos el formulario para que el usuario pueda agregar otro.
     formPresupuesto.reset();
 
-    // 5. Guardamos el array actualizado en LocalStorage.
+    // Guardamos el array actualizado en LocalStorage.
     guardarEnStorage();
 
-    // 6. Volvemos a "dibujar" toda la lista en el HTML.
+    // Volvemos a "dibujar" toda la lista en el HTML.
     renderizarPresupuestos();
 }
 
